@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Oliver Kästner <git@oliver-kaestner.de>
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+option('docs', type: 'boolean', value: true,
+       description: 'build and install documentation')
+option('examples', type: 'boolean', value: true,
+       description: 'install examples')

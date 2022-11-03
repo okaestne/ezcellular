@@ -1,0 +1,37 @@
+Source: libezcellular0
+Priority: optional
+Maintainer: Oliver Kästner <git@oliver-kaestner.de>
+Build-Depends: debhelper-compat (= 12),
+               doxygen,
+               libsdbus-c++-dev (>= 0.8),
+               meson,
+               modemmanager-dev
+Standards-Version: 4.6.0
+Section: libs
+Homepage: https://github.com/okaestne/ezcellular
+Vcs-Browser: https://github.com/okaestne/ezcellular
+Vcs-Git: https://github.com/okaestne/ezcellular.git
+Rules-Requires-Root: no
+
+Package: libezcellular0-dev
+Section: libdevel
+Architecture: any
+Depends: libezcellular0 (= ${binary:Version}),
+         libsdbus-c++-dev (>= 0.8),
+         modemmanager-dev,
+         ${misc:Depends}
+Description: C++ library for cellular modems (docs, examples and header files)
+ Aids programming apps that require cellular data connections.
+ Allows to configure and monitor modems, as well as providing access to details
+ like the signal quality.
+ .
+ This package contains the documentation, C++ header files and examples
+
+Package: libezcellular0
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: C++ library for cellular modems
+ Aids programming apps that require cellular data connections.
+ Allows to configure and monitor modems, as well as providing access to details
+ like the signal quality.

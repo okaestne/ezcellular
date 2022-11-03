@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2023 Oliver Kästner <git@oliver-kaestner.de>
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+# EXAMPLE: rename to meson.build and adjust as needed
+# short meson tutorial: https://mesonbuild.com/Tutorial.html
+project('list_modems', 'cpp', default_options: ['cpp_std=c++17'])
+
+# depend on libezcellular
+ezcellular = dependency('ezcellular', version: '>=0.1')
+
+# build source file
+executable(
+  'list_modems',             # name of the executable to be built
+  'list_modems.cpp',         # source(s)
+  dependencies: [ezcellular] # depends on libezcellular
+)
