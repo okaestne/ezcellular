@@ -5,14 +5,11 @@ Library to easily handle, control and monitor cellular modems, using the ModemMa
 ## Dependencies
 
 ```bash
-# compiler etc
-sudo apt install build-essential meson
-
-# libraries
-sudo apt install libsdbus-c++-dev modemmanager-dev
+# compiler and libraries
+sudo apt install build-essential libsdbus-c++-dev libsystemd-dev meson modemmanager-dev pkg-config
 
 # for documentation
-sudo apt install devhelp gtk-doc-tools \
+sudo apt install devhelp doxygen graphviz gtk-doc-tools \
         modemmanager-doc libmm-glib-doc network-manager-dev libsdbus-c++-doc
 ```
 
@@ -22,7 +19,7 @@ sudo apt install devhelp gtk-doc-tools \
 
 ```bash
 # dependencies for debian packaging
-sudo apt install devscripts
+sudo apt install debhelper devscripts
 # build .deb packages (will be placed into parent directory)
 debuild --no-sign -b
 # install built packages (and missing dependencies)

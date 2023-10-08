@@ -4,6 +4,7 @@ Maintainer: Oliver Kästner <git@oliver-kaestner.de>
 Build-Depends: debhelper-compat (= 12),
                doxygen,
                libsdbus-c++-dev (>= 0.8),
+               libsystemd-dev,
                meson,
                modemmanager-dev
 Standards-Version: 4.6.0
