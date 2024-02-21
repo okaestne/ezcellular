@@ -1,0 +1,27 @@
+name: Build and test
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential meson pkg-config \
+            libsdbus-c++-dev libsystemd-dev modemmanager-dev \
+            devhelp doxygen graphviz gtk-doc-tools \
+            modemmanager-doc libmm-glib-doc network-manager-dev libsdbus-c++-doc
+
+      - name: Configure build dir
+        run: |
+          meson setup build --libdir=lib -Ddocs=true -Dexamples=true
+      - name: Compile
+        run: |
+          ninja -C build
