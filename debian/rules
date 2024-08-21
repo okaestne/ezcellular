@@ -12,6 +12,13 @@ export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
 # package maintainers to append LDFLAGS
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
+# disable doxygen depending on the build profile
+ifeq ($(filter nodoc,$(DEB_BUILD_PROFILES)),)
+ENABLE_DOCS += -Ddocs=true
+else
+ENABLE_DOCS += -Ddocs=false
+endif
+
 
 %:
 	dh $@
@@ -19,5 +26,5 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 # build docs, but not examples
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		-Ddocs=true \
+		$(ENABLE_DOCS) \
 		-Dexamples=false
