@@ -1,8 +1,18 @@
 # EzCellular
 
+[![CI](https://github.com/okaestne/ezcellular/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/okaestne/ezcellular/actions/workflows/build-and-test.yml)
+
 Library to easily handle, control and monitor cellular modems, using the ModemManager D-Bus API.
 
-## Dependencies
+## Pre-Built Debian Packages (for Ubuntu, Debian, Raspbian, ...)
+
+Download the packages for your architecture from the [Releases page](https://github.com/okaestne/ezcellular/releases) and install them with `sudo apt install ./libezcellular*.deb`.
+The packages are currently built for Debian 12 (bookworm), but should also work on Ubuntu and Raspbian.
+Supported architectures are `amd64`, `armhf` (32 bit) and `arm64`.
+
+## Building and Installing this Library
+
+### Dependencies
 
 ```bash
 # compiler and libraries
@@ -12,8 +22,6 @@ sudo apt install build-essential libsdbus-c++-dev libsystemd-dev meson modemmana
 sudo apt install devhelp doxygen graphviz gtk-doc-tools \
         modemmanager-doc libmm-glib-doc network-manager-dev libsdbus-c++-doc
 ```
-
-## Build and Install Library
 
 ### [RECOMMENDED] Build Debian Package (for Ubuntu, Debian, Raspbian, ...)
 
