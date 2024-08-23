@@ -2,6 +2,8 @@ name: Build and test
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
@@ -26,3 +28,78 @@ jobs:
       - name: Compile
         run: |
           ninja -C build
+
+  upload-packages:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        arch:
+          - amd64
+          - armhf
+          - arm64
+
+    permissions:
+      contents: write
+
+    env:
+      DEB_DISTRO: bookworm
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        id: chroot-cache
+        with:
+          path: ~/.cache/sbuild/
+          key: ${{ env.DEB_DISTRO }}-${{ matrix.arch }}-chroot
+
+      - name: install dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y \
+            debhelper sbuild mmdebstrap uidmap debian-archive-keyring \
+            qemu-user-static binfmt-support
+
+      - name: prepare sbuild
+        run: |
+          cat << "EOF" > ~/.sbuildrc
+          $chroot_mode = 'unshare';
+          $ENV{'DEB_BUILD_OPTIONS'} = 'parallel=auto';
+          #$run_autopkgtest = 1;
+          $autopkgtest_root_args = '';
+          $autopkgtest_opts = [ '--apt-upgrade', '--', 'unshare', '--release', '%r', '--arch', '%a' ];
+          EOF
+
+      - name: create chroot
+        if: steps.chroot-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/.cache/sbuild
+          mmdebstrap --variant=buildd --arch=${{ matrix.arch }} \
+              --include=pkg-config,lintian \
+              --aptopt='APT::Install-Recommends 0;' \
+              --aptopt='Acquire::PDiffs "false";' \
+              --dpkgopt='force-unsafe-io' \
+              ${{ env.DEB_DISTRO }} ~/.cache/sbuild/${{ env.DEB_DISTRO }}-${{ matrix.arch }}.tar.zst
+
+      - name: build packages
+        run: |
+          mkdir -p ${{ runner.temp }}/packages
+          sbuild --build-dir ${{ runner.temp }}/packages --arch=${{ matrix.arch }} -d ${{ env.DEB_DISTRO }} -v
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ env.DEB_DISTRO }}-${{ matrix.arch }}
+          path: |
+            ${{ runner.temp }}/packages/*.deb
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ${{ runner.temp }}/packages/*.deb
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: failure()
+        timeout-minutes: 10
