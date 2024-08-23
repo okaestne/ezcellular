@@ -18,9 +18,8 @@ Supported architectures are `amd64`, `armhf` (32 bit) and `arm64`.
 # compiler and libraries
 sudo apt install build-essential libsdbus-c++-dev libsystemd-dev meson modemmanager-dev pkg-config
 
-# for documentation
-sudo apt install devhelp doxygen graphviz gtk-doc-tools \
-        modemmanager-doc libmm-glib-doc network-manager-dev libsdbus-c++-doc
+# to generate documentation
+sudo apt install doxygen graphviz
 ```
 
 ### [RECOMMENDED] Build Debian Package (for Ubuntu, Debian, Raspbian, ...)
