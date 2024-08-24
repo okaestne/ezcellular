@@ -1,3 +1,11 @@
+libezcellular0 (0.1.1) bookworm; urgency=medium
+
+  * debian: support nodoc build profile
+  * debian: move docs and example into separate -doc package
+  * debian: add missing libsystemd-dev build-dep
+
+ -- Oliver Kästner <git@oliver-kaestner.de>  Sat, 24 Aug 2024 01:56:50 +0200
+
 libezcellular0 (0.1.0) UNRELEASED; urgency=medium
 
   * Initial release
