@@ -4,6 +4,7 @@ build/
 /debian/.debhelper/
 /debian/libezcellular0/
 /debian/libezcellular0-dev/
+/debian/libezcellular0-doc/
 /debian/debhelper-build-stamp
 /debian/files
 /debian/*.substvars
